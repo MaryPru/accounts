@@ -16,6 +16,8 @@ const errors = ref({
   password: '',
 });
 
+const showPassword = ref(false);
+
 watch(localAccount, () => {
   validate();
   emit('update:modelValue', {...localAccount.value});
@@ -83,13 +85,16 @@ function validate() {
       </v-col>
       <v-col cols="12" md="3" v-if="showPasswordField">
         <v-text-field
+            v-if="showPasswordField"
             required
             label="Пароль"
             v-model="localAccount.password"
-            type="password"
+            :type="showPassword ? 'text' : 'password'"
             maxlength="100"
             :error="!localAccount.isValid && !localAccount.password"
             :error-messages="errors.password"
+            :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+            @click:append-inner="showPassword = !showPassword"
         />
       </v-col>
       <v-col cols="12" md="1" class="d-flex align-center">
